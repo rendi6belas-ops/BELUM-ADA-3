@@ -879,7 +879,7 @@ const PROGRAMS = [
 const TUTORS_BY_PROGRAM = {
   regoff:     ["Ms. Dhita", "Ms. Lasmi", "Ms. Rosnani", "Ms. Ern"],
   regon:      ["Ms. Dhita", "Ms. Lasmi", "Ms. Ern", "Mr. Alan"],
-  dsmb:       ["Ms. Ern", "Ms. Rosnani", "Ms. Lasmi", "Rendi Sensei"],
+  dsmb:       ["Ms. Ern", "Ms. Rosnani", "Ms. Lasmi", "Rakha Sensei"],
   mahasantri: ["Ms. Dhita", "Ms. Rosnani", "Ustdzh Impi", "Ms. Ern"]
 };
 
@@ -901,7 +901,7 @@ const TUTOR_BY_MAPEL = {
     "Speaking": "Ms. Ern",
     "Grammar": "Ms. Rosnani",
     "Expression & Vocabulary": "Ms. Lasmi",
-    "Bahasa Jepang": "Rendi Sensei"
+    "Bahasa Jepang": "Rakha Sensei"
     /* MANAKIBAN dihapus */
   },
   mahasantri: {
@@ -951,7 +951,7 @@ function isFemale(name) {
   const n = (name || '').trim().toLowerCase();
   if (!n) return false;
   if (n.startsWith('mr') || n.startsWith('bapak') || n.startsWith('ustadz ')) return false;
-  if (n.includes('alan') || n.includes('rendi')) return false;
+  if (n.includes('alan') || n.includes('rakha')) return false;
   return true;
 }
 function icon(tutor) { return isFemale(tutor) ? '👩‍🏫' : '👨‍🏫'; }
