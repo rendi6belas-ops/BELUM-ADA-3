@@ -912,6 +912,26 @@ const TUTOR_BY_MAPEL = {
   }
 };
 
+/* Pengecualian tutor per-hari (hari → tutor).
+   Diperiksa SEBELUM TUTOR_BY_MAPEL. */
+const TUTOR_BY_MAPEL_DAY = {
+  regon: {
+    "Vocabulary": {
+      Senin: "Ms. Dhita",
+      Selasa: "Ms. Lasmi",   // pengecualian: Ms. Dhita tidak bisa
+      Rabu:  "Ms. Dhita",
+      Kamis: "Ms. Dhita"
+    }
+  }
+};
+
+function getDefaultTutor(progKey, mapel, day) {
+  if (!mapel) return '';
+  const dayMap = (TUTOR_BY_MAPEL_DAY[progKey] || {})[mapel];
+  if (dayMap && dayMap[day]) return dayMap[day];
+  return (TUTOR_BY_MAPEL[progKey] || {})[mapel] || '';
+}
+
 /* Data jadwal default (Manakiban dihapus, Jumat tidak ada) */
 const DATA = [
   { prog: "regoff", lokasi: "RPS", waktu: "09.00-10.30",
@@ -1017,7 +1037,7 @@ function getEffective(progKey, row, day) {
   if ('tutor' in ov) {
     tutor = ov.tutor;
   } else {
-    tutor = mapel ? ((TUTOR_BY_MAPEL[progKey] || {})[mapel] || '') : '';
+    tutor = getDefaultTutor(progKey, mapel, day);
   }
   return { mapel, tutor };
 }
@@ -1318,7 +1338,7 @@ function renderModalContent() {
     list.appendChild(emptyBtn);
 
     getMapelForProgram(progKey).forEach(m => {
-      const defTutor = (TUTOR_BY_MAPEL[progKey] || {})[m] || '';
+      const defTutor = getDefaultTutor(progKey, m, getToday());
       const btn = document.createElement('button');
       btn.className = 'tutor-item' + (currentMapel === m ? ' selected' : '');
       btn.innerHTML =
@@ -1347,7 +1367,7 @@ function getCurrentTutor(progKey, waktu) {
   const mapel = getCurrentMapel(progKey, waktu);
   const ov = (sessionOverrides[progKey] && sessionOverrides[progKey][waktu]) || {};
   if ('tutor' in ov) return ov.tutor;
-  return mapel ? ((TUTOR_BY_MAPEL[progKey] || {})[mapel] || '') : '';
+  return getDefaultTutor(progKey, mapel, day);
 }
 
 function pickTutor(name) {
